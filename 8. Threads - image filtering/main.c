@@ -5,13 +5,13 @@
 #include <stdlib.h>
 #include <string.h>
 #include <stdlib.h>
-//#include <zconf.h>
 #include <pthread.h>
-//#include <sys/times.h>
+#include <sys/times.h>
 #include <sys/time.h>
 
 #define buff_size 512
 
+const int M = 255;
 const char * delims = " \t\n\r";
 typedef struct timeval timeval;
 
@@ -78,36 +78,73 @@ int main(int argc, char **argv) {
 //    filter_file_name = argv[4];
 //    result_file_name = argv[5];
 
-    char buff[buff_size];\
-    FILE * i_file, * f_file, * o_file;
+    char buff[buff_size];
+    FILE * fp;
 
     // przetworzymy plik z filtrami
-    printf("%s", filter_file_name);
-    if ((f_file = fopen(filter_file_name, "r")) == NULL)   error("fopen f_file");
+    printf("File name: %s\n", filter_file_name);
+    if ((fp = fopen(filter_file_name, "r")) == NULL)   error("fopen f_file");
 
-    int w, h, c;
+    fgets(buff, buff_size, fp); // c
 
-    char * line = NULL;
-    size_t len = 0;
-    ssize_t read;
+    int c = (int) strtol(buff, NULL, 10);
 
-    while ((read = getline(&line, &len, f_file)) != -1){
-        printf("Retrieved line of length %zu:\n> ", read);
-        printf("%s\\n", line);
+    double ** K = calloc((size_t)c, sizeof(double*));
+    for (int i = 0; i < c; ++i){
+        K[i] = calloc((size_t)c, sizeof(double));
+    }
+    int i = 0, j = 0;
+    while (fgets(buff, buff_size, fp) != 0){
+        char * num;
+        char * content = strdup(buff);
+        while ((num = strsep(&content, delims)) != 0){
+            printf("num = %s\n", num);
+            double k;
+            sscanf(num, "%lf", &k);
+            fflush(stdout);
+            fflush(stdin);
+            if (i == c) {
+                ++j;
+                i = 0;
+            }
+
+            K[i++][j] = k;
+        }
+//    printf("### --- DUPA --- ###\n");
     }
 
-//    double ** K = calloc((size_t)c, sizeof(double*));
-//    for (int i = 0; i < c; ++i){
-//        K[i] = calloc((size_t)c, sizeof(double));
-//    }
+    for (int i = 0; i < c; ++i){
+        for (int j = 0; j < c; ++j){
+            printf("%f ", K[i][j]);
+        }
+        printf("\n");
+    }
 
-
-
-    fclose(f_file);
-    if (line) free(line);
+    fclose(fp);
     /*
     // przetworzymy plik z obrazem wejsciowym
     if ((i_file = fopen(image_file_name, "r"))  == NULL)   error("fopen i_file");
+
+    int w, h;
+
+    fgets(buff, buff_size, f_file); // P2
+    fgets(buff, buff_size, f_file); // dimensions
+
+    printf(">>%s<<\n", buff);
+
+    char * dims;
+
+    dims = strdup(buff);
+    w = (int) strtol(strsep(&dims, delims), NULL, 10);
+    h = (int) strtol(strsep(&dims, delims), NULL, 10);
+
+    fgets(buff, buff_size, f_file); // M
+    fgets(buff, buff_size, f_file); // proper content
+
+    double ** K = calloc((size_t)c, sizeof(double*));
+    for (int i = 0; i < c; ++i){
+        K[i] = calloc((size_t)c, sizeof(double));
+    }
 
     fclose(i_file);
 
