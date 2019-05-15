@@ -1,0 +1,4 @@
+obiekt.txt . 2
+obiekt1.txt . 5
+obiekt2.txt . 3
+obiekt3.txt . 4

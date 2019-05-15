@@ -1,0 +1,4 @@
+ps aux | wc -l
+ps aux | grep "grep"
+ls -l | grep Apr | head -n 1
+cat sample.txt | grep -v a | sort 

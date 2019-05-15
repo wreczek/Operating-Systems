@@ -1,0 +1,5 @@
+Standardowa biblioteka C oferuje funkcję odczytu niskiego poziomu read(...).
+Standardowa biblioteka C oferuje również wyższą funkcję fread(...). W przeciwieństwie do funkcji odczytu, można ustawić rozmiar bufora. Bufory mogą być dobre lub złe. Z jednej strony zmniejszają liczbę dostępów do dysku. Z drugiej strony wprowadzają krok pośredni między dyskiem a danymi użytkownika. Oznacza to, że mogą powodować niepotrzebne kopiowanie danych. Bufory zwykle powodują, że oprogramowanie jest szybsze, ponieważ kopiowanie danych w pamięci jest znacznie szybsze niż odczyt z dysku.
+To wyjania nasze wyniki, ponieważ sortowanie jak i kopiowanie z uzyciem funkcji z rodziny fread(...)(czyli funkcji bibliotecznych C) jest szybsze niz te same zadania z uzyciem funkcji z rodziny read(...)(czyli funkcji systemowych).
+
+Wiktor Reczek

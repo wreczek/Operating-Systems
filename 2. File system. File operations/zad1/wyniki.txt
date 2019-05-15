@@ -1,0 +1,240 @@
+Generate 1 records each 200000 bytes long:
+	USER_TIME: 0.000000l
+	SYSTEM_TIME: 0.000000l
+
+Copy_lib records.txt to records2.txt with 1 records each 200000 bytes long:
+	USER_TIME: 0.000000l
+	SYSTEM_TIME: 0.000000l
+
+Copy_sys records.txt to records3.txt with 1 records each 200000 bytes long:
+	USER_TIME: 0.000000l
+	SYSTEM_TIME: 0.000000l
+
+Sort_lib records2.txt with 1 records each 50000 bytes long:
+	USER_TIME: 0.000000l
+	SYSTEM_TIME: 0.000000l
+
+Sort_sys records2.txt with 1 records each 50000 bytes long:
+	USER_TIME: 0.000000l
+	SYSTEM_TIME: 0.000000l
+
+Generate 1 records each 400000 bytes long:
+	USER_TIME: 0.000000l
+	SYSTEM_TIME: 0.000000l
+
+Copy_lib records.txt to records2.txt with 1 records each 400000 bytes long:
+	USER_TIME: 0.000000l
+	SYSTEM_TIME: 0.000000l
+
+Copy_sys records.txt to records3.txt with 1 records each 400000 bytes long:
+	USER_TIME: 0.000000l
+	SYSTEM_TIME: 0.000000l
+
+Sort_lib records2.txt with 1 records each 100000 bytes long:
+	USER_TIME: 0.000000l
+	SYSTEM_TIME: 0.000000l
+
+Sort_sys records2.txt with 1 records each 100000 bytes long:
+	USER_TIME: 0.000000l
+	SYSTEM_TIME: 0.000000l
+
+Generate 4 records each 4000 bytes long:
+	USER_TIME: 0.000000l
+	SYSTEM_TIME: 0.000000l
+
+Copy_lib records.txt to records2.txt with 4 records each 4000 bytes long:
+	USER_TIME: 0.000000l
+	SYSTEM_TIME: 0.000000l
+
+Copy_sys records.txt to records3.txt with 4 records each 4000 bytes long:
+	USER_TIME: 0.000000l
+	SYSTEM_TIME: 0.000000l
+
+Sort_lib records2.txt with 4 records each 100 bytes long:
+	USER_TIME: 0.000000l
+	SYSTEM_TIME: 0.000000l
+
+Sort_sys records2.txt with 4 records each 100 bytes long:
+	USER_TIME: 0.000000l
+	SYSTEM_TIME: 0.000000l
+
+Generate 4 records each 8000 bytes long:
+	USER_TIME: 0.000000l
+	SYSTEM_TIME: 0.000000l
+
+Copy_lib records.txt to records2.txt with 4 records each 8000 bytes long:
+	USER_TIME: 0.000000l
+	SYSTEM_TIME: 0.000000l
+
+Copy_sys records.txt to records3.txt with 4 records each 8000 bytes long:
+	USER_TIME: 0.000000l
+	SYSTEM_TIME: 0.000000l
+
+Sort_lib records2.txt with 4 records each 200 bytes long:
+	USER_TIME: 0.000000l
+	SYSTEM_TIME: 0.000000l
+
+Sort_sys records2.txt with 4 records each 200 bytes long:
+	USER_TIME: 0.000000l
+	SYSTEM_TIME: 0.000000l
+
+Generate 512 records each 4000 bytes long:
+	USER_TIME: 0.000000l
+	SYSTEM_TIME: 0.000000l
+
+Copy_lib records.txt to records2.txt with 512 records each 4000 bytes long:
+	USER_TIME: 0.000000l
+	SYSTEM_TIME: 0.000000l
+
+Copy_sys records.txt to records3.txt with 512 records each 4000 bytes long:
+	USER_TIME: 0.000000l
+	SYSTEM_TIME: 0.000000l
+
+Sort_lib records2.txt with 512 records each 80 bytes long:
+	USER_TIME: 0.030000l
+	SYSTEM_TIME: 0.020000l
+
+Sort_sys records2.txt with 512 records each 80 bytes long:
+	USER_TIME: 0.040000l
+	SYSTEM_TIME: 0.100000l
+
+Generate 512 records each 8000 bytes long:
+	USER_TIME: 0.000000l
+	SYSTEM_TIME: 0.000000l
+
+Copy_lib records.txt to records2.txt with 512 records each 8000 bytes long:
+	USER_TIME: 0.000000l
+	SYSTEM_TIME: 0.000000l
+
+Copy_sys records.txt to records3.txt with 512 records each 8000 bytes long:
+	USER_TIME: 0.000000l
+	SYSTEM_TIME: 0.000000l
+
+Sort_lib records2.txt with 512 records each 160 bytes long:
+	USER_TIME: 0.020000l
+	SYSTEM_TIME: 0.040000l
+
+Sort_sys records2.txt with 512 records each 160 bytes long:
+	USER_TIME: 0.040000l
+	SYSTEM_TIME: 0.100000l
+
+Generate 1024 records each 4000 bytes long:
+	USER_TIME: 0.000000l
+	SYSTEM_TIME: 0.000000l
+
+Copy_lib records.txt to records2.txt with 1024 records each 4000 bytes long:
+	USER_TIME: 0.000000l
+	SYSTEM_TIME: 0.000000l
+
+Copy_sys records.txt to records3.txt with 1024 records each 4000 bytes long:
+	USER_TIME: 0.000000l
+	SYSTEM_TIME: 0.000000l
+
+Sort_lib records2.txt with 1024 records each 40 bytes long:
+	USER_TIME: 0.120000l
+	SYSTEM_TIME: 0.100000l
+
+Sort_sys records2.txt with 1024 records each 40 bytes long:
+	USER_TIME: 0.170000l
+	SYSTEM_TIME: 0.300000l
+
+Generate 1024 records each 8000 bytes long:
+	USER_TIME: 0.000000l
+	SYSTEM_TIME: 0.000000l
+
+Copy_lib records.txt to records2.txt with 1024 records each 8000 bytes long:
+	USER_TIME: 0.000000l
+	SYSTEM_TIME: 0.000000l
+
+Copy_sys records.txt to records3.txt with 1024 records each 8000 bytes long:
+	USER_TIME: 0.000000l
+	SYSTEM_TIME: 0.010000l
+
+Sort_lib records2.txt with 1024 records each 80 bytes long:
+	USER_TIME: 0.110000l
+	SYSTEM_TIME: 0.120000l
+
+Sort_sys records2.txt with 1024 records each 80 bytes long:
+	USER_TIME: 0.110000l
+	SYSTEM_TIME: 0.360000l
+
+Generate 4096 records each 2000 bytes long:
+	USER_TIME: 0.000000l
+	SYSTEM_TIME: 0.000000l
+
+Copy_lib records.txt to records2.txt with 4096 records each 2000 bytes long:
+	USER_TIME: 0.000000l
+	SYSTEM_TIME: 0.000000l
+
+Copy_sys records.txt to records3.txt with 4096 records each 2000 bytes long:
+	USER_TIME: 0.000000l
+	SYSTEM_TIME: 0.010000l
+
+Sort_lib records2.txt with 4096 records each 20 bytes long:
+	USER_TIME: 1.590000l
+	SYSTEM_TIME: 1.540000l
+
+Sort_sys records2.txt with 4096 records each 20 bytes long:
+	USER_TIME: 2.240000l
+	SYSTEM_TIME: 4.800000l
+
+Generate 4096 records each 4000 bytes long:
+	USER_TIME: 0.000000l
+	SYSTEM_TIME: 0.000000l
+
+Copy_lib records.txt to records2.txt with 4096 records each 4000 bytes long:
+	USER_TIME: 0.000000l
+	SYSTEM_TIME: 0.010000l
+
+Copy_sys records.txt to records3.txt with 4096 records each 4000 bytes long:
+	USER_TIME: 0.000000l
+	SYSTEM_TIME: 0.010000l
+
+Sort_lib records2.txt with 4096 records each 40 bytes long:
+	USER_TIME: 1.670000l
+	SYSTEM_TIME: 1.560000l
+
+Sort_sys records2.txt with 4096 records each 40 bytes long:
+	USER_TIME: 1.990000l
+	SYSTEM_TIME: 5.070000l
+
+Generate 8192 records each 1000 bytes long:
+	USER_TIME: 0.000000l
+	SYSTEM_TIME: 0.000000l
+
+Copy_lib records.txt to records2.txt with 8192 records each 1000 bytes long:
+	USER_TIME: 0.000000l
+	SYSTEM_TIME: 0.000000l
+
+Copy_sys records.txt to records3.txt with 8192 records each 1000 bytes long:
+	USER_TIME: 0.000000l
+	SYSTEM_TIME: 0.010000l
+
+Sort_lib records2.txt with 8192 records each 10 bytes long:
+	USER_TIME: 6.530000l
+	SYSTEM_TIME: 6.700000l
+
+Sort_sys records2.txt with 8192 records each 10 bytes long:
+	USER_TIME: 9.050000l
+	SYSTEM_TIME: 21.830000l
+
+Generate 8192 records each 2000 bytes long:
+	USER_TIME: 0.000000l
+	SYSTEM_TIME: 0.000000l
+
+Copy_lib records.txt to records2.txt with 8192 records each 2000 bytes long:
+	USER_TIME: 0.000000l
+	SYSTEM_TIME: 0.010000l
+
+Copy_sys records.txt to records3.txt with 8192 records each 2000 bytes long:
+	USER_TIME: 0.000000l
+	SYSTEM_TIME: 0.020000l
+
+Sort_lib records2.txt with 8192 records each 20 bytes long:
+	USER_TIME: 6.240000l
+	SYSTEM_TIME: 6.220000l
+
+Sort_sys records2.txt with 8192 records each 20 bytes long:
+	USER_TIME: 8.580000l
+	SYSTEM_TIME: 19.670000l
+
