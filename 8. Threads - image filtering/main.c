@@ -84,7 +84,8 @@ int calculate_pixel_value(int x, int y, int w, int h, int c, int ** I, double **
             pv += I[a][b] * K[i][j];
         }
     }
-    pv = pv < 0 ? 0 : pv; // ??
+    pv = pv < 0 ? 0 : pv;
+    pv = pv > 255 ? 255 : pv;
     return (int) round(pv);
 }
 
@@ -193,7 +194,7 @@ int main(int argc, char **argv) {
     struct thread_info **threads_info = malloc(thread_number * sizeof(thread_info *));
 
     struct timeval s_time = gettime();
-
+    /*
     for (int i = 0; i < thread_number; i++) {
         threads_info[i]      = malloc(sizeof(thread_info));
         threads_info[i]->s   = (i * w / thread_number);
@@ -223,6 +224,13 @@ int main(int argc, char **argv) {
     }
     //printf("%d", rval_ptr);
     free(threads_info);
+    */
+
+    for (int y = 0; y < w; ++y) {
+        for (int x = 0; x < h; ++x){
+            J[x][y] = calculate_pixel_value(x, y, w, h, c, I, K);
+        }
+    }
 
     struct timeval e_time = gettime();
     struct timeval d_time = diff_time(s_time, e_time);

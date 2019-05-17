@@ -13,3 +13,10 @@
 4 threads with c = 3 worked for 0.038283
 4 threads with c = 3 worked for 0.040943
 4 threads with c = 3 worked for 0.040718
+4 threads with c = 3 worked for 0.011494
+4 threads with c = 3 worked for 0.011885
+4 threads with c = 3 worked for 0.008939
+4 threads with c = 3 worked for 0.011842
+4 threads with c = 3 worked for 0.009894
+4 threads with c = 3 worked for 0.036503
+4 threads with c = 3 worked for 0.032057
