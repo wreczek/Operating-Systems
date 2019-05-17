@@ -10,20 +10,23 @@
 #include <sys/time.h>
 
 #define buff_size 512
+#define MAX_THREADS_NUM 8
 
 const int M = 255;
 const char * delims = " \t\n\r";
 typedef struct timeval timeval;
 
-int thread_number       = 4;
+int thread_number;//       = 4;
 char * way_of_division;     // block / interleaved
-char * image_file_name  = "apple.pgm";
-char * filter_file_name = "filter_c3_2.txt";
-char * result_file_name = "apple_res.pgm";    // obraz wynikowy
+char * image_file_name;//  = "apple.pgm";
+char * filter_file_name;// = "filter_c32.txt";
+char * result_file_name;// = "apple_res.pgm";    // obraz wynikowy
+timeval threads_times[MAX_THREADS_NUM];
 
 typedef struct thread_info {
     int s;
     int e;
+    int ind;
 } thread_info;
 
 void error(char * msg){
@@ -31,14 +34,14 @@ void error(char * msg){
     exit(EXIT_FAILURE);
 }
 
-struct timeval gettime(){
-    struct timeval time;
+timeval gettime(){
+    timeval time;
     gettimeofday(&time, NULL);
     return time;
 }
 
-struct timeval diff_time(struct timeval s_time, struct timeval e_time){
-    struct timeval diff;
+timeval diff_time(timeval s_time, timeval e_time){
+    timeval diff;
     diff.tv_sec = e_time.tv_sec - s_time.tv_sec;
     diff.tv_usec = e_time.tv_usec - s_time.tv_usec;
 
@@ -50,8 +53,6 @@ struct timeval diff_time(struct timeval s_time, struct timeval e_time){
 }
 
 void save_picture(int w, int h, int ** J, FILE * fp){
-    //char buff[1024];
-
     fprintf(fp, "P2\n");
     fprintf(fp, "%d %d\n", w, h);
     fprintf(fp, "%d\n", 255);
@@ -67,14 +68,21 @@ void save_picture(int w, int h, int ** J, FILE * fp){
     fclose(fp);
 }
 
-void save_results(timeval time, int c){ // czasy
+void save_results(timeval time, int c, const char * way_of_division){ // czasy
     FILE *fp = fopen("Times.txt", "a");
+    fprintf(fp, "####### START ########\n");
+    if (strcmp(way_of_division, "block") == 0)      fprintf(fp, "BLOCKED mode.\n");
+    else                                            fprintf(fp, "INTERLEAVED mode.\n");
     fprintf(fp, "%d threads with c = %d worked for %ld.%06ld\n", thread_number, c, time.tv_sec, time.tv_usec);
+    for (int i = 0; i < thread_number; ++i){
+        fprintf(fp, "\t%d-th thread worked for %ld.%ld\n", i, threads_times[i].tv_sec, threads_times[i].tv_usec);
+    }
+    fprintf(fp, "######## END #########\n\n");
     fclose(fp);
 }
 
 int calculate_pixel_value(int x, int y, int w, int h, int c, int ** I, double ** K){
-    double pv;
+    double pv = 0;
     for (int i = 0; i < c; ++i){
         int a = (int)round(fmax(0, x - ceil(c/2) + i));
         a = a < h ? a : h-1;
@@ -91,24 +99,23 @@ int calculate_pixel_value(int x, int y, int w, int h, int c, int ** I, double **
 
 
 int main(int argc, char **argv) {
-    //if (argc != 6) /* --> */ error("bad args number");
+    if (argc != 6) /* --> */ error("bad args number");
 
-//    thread_number    = atoi(argv[1]);
-//    way_of_division  = argv[2];
-//    image_file_name  = argv[3];
-//    filter_file_name = argv[4];
-//    result_file_name = argv[5];
+    thread_number    = atoi(argv[1]);
+    way_of_division  = argv[2];
+    image_file_name  = argv[3];
+    filter_file_name = argv[4];
+    result_file_name = argv[5];
 
     char buff[buff_size];
     FILE * fp;
 
-    /// ### ------ FILTER ------- ###
+    /// ### >>>>>>> FILTER >>>>>>> ###
     if ((fp = fopen(filter_file_name, "r")) == NULL)   error("fopen f_file");
 
     fgets(buff, buff_size, fp); // c
 
     int c = (int) strtol(buff, NULL, 10);
-    printf("c = %d", c);
     double ** K = calloc((size_t)c, sizeof(double*));
     for (int i = 0; i < c; ++i){
         K[i] = calloc((size_t)c, sizeof(double));
@@ -121,7 +128,7 @@ int main(int argc, char **argv) {
         char * content = strdup(buff);
         while ((num = strsep(&content, delims)) != 0){
             if (strcmp(num, "") == 0) continue;
-            if (i == c) {
+            if (j == c) {
                 ++i;
                 j = 0;
             }
@@ -132,9 +139,8 @@ int main(int argc, char **argv) {
         }
     }
     fclose(fp);
-    /// ### ------ FILTER ------- ###
-    /// |||||||||||||||||||||||||||||
-    /// ### ------- INPUT ------- ###
+    /// ### <<<<<< FILTER <<<<<<< ###
+    /// ### >>>>>>> INPUT >>>>>>> ###
     if ((fp = fopen(image_file_name, "r"))  == NULL)   error("fopen i_file");
 
     int w, h;
@@ -173,93 +179,107 @@ int main(int argc, char **argv) {
         }
     }
     fclose(fp);
-    /// ### ------- INPUT ------- ###
-    /// |||||||||||||||||||||||||||||
-    /// ### ------ OUTPUT ------- ###
+    /// ### <<<<<<< INPUT <<<<<<< ###
+    /// ### >>>>>>> OUTPUT >>>>>> ###
     int ** J = calloc((size_t)h, sizeof(int*));
     for (int i = 0; i < h; ++i){
         J[i] = calloc((size_t)w, sizeof(int));
     }
 
     if ((fp = fopen(result_file_name, "w")) == NULL)   error("fopen o_file");
-//    printf("### --- DUPA --- ###\n");
+    /// ### <<<<<<< OUTPUT <<<<<<<<< ###
+    timeval s_time = gettime();
 
-
-    /// ### ------ OUTPUT ------- ###
-    /// |||||||||||||||||||||||||||||
-
-    /// ### ------- BLOCK ------- ###
     int thread_id;
     pthread_t *thread = calloc((size_t)thread_number, sizeof(pthread_t));
-    struct thread_info **threads_info = malloc(thread_number * sizeof(thread_info *));
+    thread_info ** threads_info = calloc((size_t)thread_number, sizeof(thread_info*));
 
-    struct timeval s_time = gettime();
-    /*
     for (int i = 0; i < thread_number; i++) {
         threads_info[i]      = malloc(sizeof(thread_info));
         threads_info[i]->s   = (i * w / thread_number);
         threads_info[i]->e   = ((i + 1) * w / thread_number);
+        threads_info[i]->ind = i;
     }
 
-    void *single_thread(void *infos) {
-        struct thread_info *thread_infos = (thread_info *) infos;
+    /// ### >>>>>>> FUNCTIONS >>>>>> ###
+    void *single_thread_blocked(void *info) {
+        timeval s_time, e_time;
+        s_time = gettime();
+        thread_info *thread_infos = (thread_info *) info;
+
         for (int y = thread_infos->s; y < thread_infos->e; ++y) {
             for (int x = 0; x < h; ++x){
                 J[x][y] = calculate_pixel_value(x, y, w, h, c, I, K);
             }
         }
+        e_time = gettime();
+        timeval d_time = diff_time(s_time, e_time);
+        threads_times[thread_infos->ind] = d_time;
         return (void *) 0;
     }
 
-    for (int i = 0; i < thread_number; ++i){
-        if ((thread_id = pthread_create(&thread[i], NULL, single_thread, (void*)threads_info[i])) != 0)
-            error("pthread_create");
+    void * single_thread_interleaved(void * info){
+        timeval s_time, e_time;
+        s_time = gettime();
+        thread_info * threads_info = (thread_info*)info;
+
+        for (int j = threads_info->ind; j < w; j += thread_number){
+            for (int i = 0; i < h; i++){
+                J[i][j] = calculate_pixel_value(i, j, w, h, c, I, K);
+            }
+        }
+
+        e_time = gettime();
+        timeval d_time = diff_time(s_time, e_time);
+        threads_times[threads_info->ind] = d_time;
+        return (void *) 0;
     }
+    /// ### <<<<<<< FUNCTIONS <<<<<<< ###
 
-    int * rval_ptr = calloc((size_t)thread_number, sizeof(int));
+    if (strcmp(way_of_division, "block") == 0){
+        /// ### >>>>>>> BLOCK >>>>>> ###
+        for (int i = 0; i < thread_number; i++){
+            if ((thread_id = pthread_create(&thread[i], NULL, single_thread_blocked, (void*)threads_info[i])) != 0){
+                error("pyhread_create");
+            }
+        }
+        /// ### <<<<<<< BLOCK <<<<<<< ###
+    }
+    else if (strcmp(way_of_division, "interleaved") == 0){
+        /// ### >>>> INTERLEAVED >>>> ###
+        for (int i = 0; i < thread_number; i++){
+            if ((thread_id = pthread_create(&thread[i], NULL, single_thread_interleaved, (void*)threads_info[i])) != 0){
+                error("pyhread_create");
+            }
+        }
+        /// ### <<<< INTERLEAVED <<<< ###
+    }
+    else error("bad way_of_division");
 
-    for (int i = 0; i < thread_number; ++i){
-        pthread_join(thread[i], (void**)&rval_ptr); // dziala
+    for (int i = 0; i < thread_number; i++){
+        pthread_join(thread[i], NULL);
         free(threads_info[i]);
     }
-    //printf("%d", rval_ptr);
     free(threads_info);
-    */
+    free(thread);
 
-    for (int y = 0; y < w; ++y) {
-        for (int x = 0; x < h; ++x){
-            J[x][y] = calculate_pixel_value(x, y, w, h, c, I, K);
-        }
-    }
-
-    struct timeval e_time = gettime();
-    struct timeval d_time = diff_time(s_time, e_time);
-
-    /// ### ------- BLOCK ------- ###
-    /// |||||||||||||||||||||||||||||
-    /// ### ---- INTERLEAVED ---- ###
+    timeval e_time = gettime();
+    timeval d_time = diff_time(s_time, e_time);
 
     save_picture(w, h, J, fp);
-    save_results(d_time, c);
-    //fclose(fp);
+    save_results(d_time, c, way_of_division);
+    fclose(fp);
 
     for (int i = 0; i < h; ++i){
-        for (int j = 0; j < w; ++j){
-            printf("J[%d][%d] = %d\n", i, j, J[i][j]);
-        }
+        free(I[i]);
+        free(J[i]);
     }
-
-    // free the memory
-    for (int i = 0; i < h; ++i)      free(I[i]);
+    for (int i = 0; i < c; ++i){
+        free(K[i]);
+    }
     free(I);
-
-    for (int i = 0; i < h; ++i)      free(J[i]);
     free(J);
-
-//    for (int i = 0; i < c; ++i)      free(K[i]);
-//    free(K);
-
-    free(thread);
+    free(K);
 
     return 0;
 }

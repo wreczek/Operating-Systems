@@ -1,22 +1,289 @@
-4 threads worked for 0.000000
-4 threads worked for 0.000115
-4 threads worked for 0.000126
-4 threads worked for 0.001581
-4 threads worked for 0.000117
-4 threads worked for 0.000128
-4 threads worked for 0.000895
-4 threads worked for 0.002100
-4 threads with c = 3 worked for 0.000485
-4 threads with c = 3 worked for 0.033538
-4 threads with c = 3 worked for 0.042299
-4 threads with c = 3 worked for 0.032115
-4 threads with c = 3 worked for 0.038283
-4 threads with c = 3 worked for 0.040943
-4 threads with c = 3 worked for 0.040718
-4 threads with c = 3 worked for 0.011494
-4 threads with c = 3 worked for 0.011885
-4 threads with c = 3 worked for 0.008939
-4 threads with c = 3 worked for 0.011842
-4 threads with c = 3 worked for 0.009894
-4 threads with c = 3 worked for 0.036503
-4 threads with c = 3 worked for 0.032057
+####### START ########
+4 threads with c = 3 worked for 0.797176
+	0-th thread worked for 0.182646
+	1-th thread worked for 0.179776
+	2-th thread worked for 0.184902
+	3-th thread worked for 0.805967
+######## END #########
+
+####### START ########
+4 threads with c = 3 worked for 0.723473
+	0-th thread worked for 0.737409
+	1-th thread worked for 0.740166
+	2-th thread worked for 0.728581
+	3-th thread worked for 0.724964
+######## END #########
+
+####### START ########
+4 threads with c = 3 worked for 0.217759
+	0-th thread worked for 0.193204
+	1-th thread worked for 0.202932
+	2-th thread worked for 0.201778
+	3-th thread worked for 0.217530
+######## END #########
+
+####### START ########
+4 threads with c = 3 worked for 0.280878
+	0-th thread worked for 0.253626
+	1-th thread worked for 0.242041
+	2-th thread worked for 0.266719
+	3-th thread worked for 0.277752
+######## END #########
+
+####### START ########
+4 threads with c = 3 worked for 0.264807
+	0-th thread worked for 0.241539
+	1-th thread worked for 0.248301
+	2-th thread worked for 0.253517
+	3-th thread worked for 0.261536
+######## END #########
+
+####### START ########
+4 threads with c = 3 worked for 0.773892
+	0-th thread worked for 0.0
+	1-th thread worked for 0.0
+	2-th thread worked for 0.0
+	3-th thread worked for 0.0
+######## END #########
+
+####### START ########
+4 threads with c = 3 worked for 0.221758
+	0-th thread worked for 0.196882
+	1-th thread worked for 0.210852
+	2-th thread worked for 0.211656
+	3-th thread worked for 0.220739
+######## END #########
+
+####### START ########
+4 threads with c = 3 worked for 0.210609
+	0-th thread worked for 0.0
+	1-th thread worked for 0.0
+	2-th thread worked for 0.0
+	3-th thread worked for 0.0
+######## END #########
+
+####### START ########
+4 threads with c = 3 worked for 0.000001
+	0-th thread worked for 0.0
+	1-th thread worked for 0.0
+	2-th thread worked for 0.0
+	3-th thread worked for 0.0
+######## END #########
+
+####### START ########
+4 threads with c = 3 worked for 0.215544
+	0-th thread worked for 0.200331
+	1-th thread worked for 0.201613
+	2-th thread worked for 0.200090
+	3-th thread worked for 0.215347
+######## END #########
+
+####### START ########
+4 threads with c = 3 worked for 0.216159
+	0-th thread worked for 0.203287
+	1-th thread worked for 0.210205
+	2-th thread worked for 0.212767
+	3-th thread worked for 0.211041
+######## END #########
+
+####### START ########
+4 threads with c = 3 worked for 0.206966
+	0-th thread worked for 0.191773
+	1-th thread worked for 0.187230
+	2-th thread worked for 0.206162
+	3-th thread worked for 0.198974
+######## END #########
+
+####### START ########
+4 threads with c = 3 worked for 0.225805
+	0-th thread worked for 0.209827
+	1-th thread worked for 0.210265
+	2-th thread worked for 0.217574
+	3-th thread worked for 0.222286
+######## END #########
+
+####### START ########
+4 threads with c = 3 worked for 0.209920
+	0-th thread worked for 0.185476
+	1-th thread worked for 0.187179
+	2-th thread worked for 0.198235
+	3-th thread worked for 0.201637
+######## END #########
+
+####### START ########
+4 threads with c = 3 worked for 0.210847
+	0-th thread worked for 0.192638
+	1-th thread worked for 0.200364
+	2-th thread worked for 0.209826
+	3-th thread worked for 0.210466
+######## END #########
+
+####### START ########
+4 threads with c = 3 worked for 0.219307
+	0-th thread worked for 0.199473
+	1-th thread worked for 0.211752
+	2-th thread worked for 0.217781
+	3-th thread worked for 0.219128
+######## END #########
+
+####### START ########
+INTERLEAVED mode.
+4 threads with c = 3 worked for 0.747299
+	0-th thread worked for 0.766022
+	1-th thread worked for 0.766269
+	2-th thread worked for 0.761022
+	3-th thread worked for 0.749171
+######## END #########
+
+####### START ########
+INTERLEAVED mode.
+4 threads with c = 3 worked for 0.218285
+	0-th thread worked for 0.197521
+	1-th thread worked for 0.198789
+	2-th thread worked for 0.196871
+	3-th thread worked for 0.218103
+######## END #########
+
+####### START ########
+BLOCKED mode.
+4 threads with c = 3 worked for 0.224113
+	0-th thread worked for 0.197670
+	1-th thread worked for 0.206044
+	2-th thread worked for 0.211879
+	3-th thread worked for 0.214083
+######## END #########
+
+####### START ########
+BLOCKED mode.
+4 threads with c = 3 worked for 0.224839
+	0-th thread worked for 0.216070
+	1-th thread worked for 0.208730
+	2-th thread worked for 0.221820
+	3-th thread worked for 0.222959
+######## END #########
+
+####### START ########
+BLOCKED mode.
+4 threads with c = 3 worked for 0.246580
+	0-th thread worked for 0.218851
+	1-th thread worked for 0.222851
+	2-th thread worked for 0.227308
+	3-th thread worked for 0.246379
+######## END #########
+
+####### START ########
+INTERLEAVED mode.
+4 threads with c = 3 worked for 0.215291
+	0-th thread worked for 0.191289
+	1-th thread worked for 0.201168
+	2-th thread worked for 0.202561
+	3-th thread worked for 0.203364
+######## END #########
+
+####### START ########
+INTERLEAVED mode.
+4 threads with c = 3 worked for 0.265184
+	0-th thread worked for 0.257749
+	1-th thread worked for 0.260238
+	2-th thread worked for 0.259014
+	3-th thread worked for 0.265006
+######## END #########
+
+####### START ########
+INTERLEAVED mode.
+1 threads with c = 3 worked for 0.197846
+	0-th thread worked for 0.197691
+######## END #########
+
+####### START ########
+INTERLEAVED mode.
+8 threads with c = 3 worked for 0.688416
+	0-th thread worked for 0.719011
+	1-th thread worked for 0.716850
+	2-th thread worked for 0.723413
+	3-th thread worked for 0.714668
+	4-th thread worked for 0.700501
+	5-th thread worked for 0.704575
+	6-th thread worked for 0.695898
+	7-th thread worked for 0.698811
+######## END #########
+
+####### START ########
+INTERLEAVED mode.
+1 threads with c = 3 worked for 0.211526
+	0-th thread worked for 0.211383
+######## END #########
+
+####### START ########
+INTERLEAVED mode.
+2 threads with c = 3 worked for 0.224322
+	0-th thread worked for 0.211901
+	1-th thread worked for 0.222549
+######## END #########
+
+####### START ########
+INTERLEAVED mode.
+4 threads with c = 3 worked for 0.207158
+	0-th thread worked for 0.181898
+	1-th thread worked for 0.190599
+	2-th thread worked for 0.194058
+	3-th thread worked for 0.205860
+######## END #########
+
+####### START ########
+INTERLEAVED mode.
+8 threads with c = 3 worked for 0.749863
+	0-th thread worked for 0.787348
+	1-th thread worked for 0.785186
+	2-th thread worked for 0.774393
+	3-th thread worked for 0.775131
+	4-th thread worked for 0.768039
+	5-th thread worked for 0.760098
+	6-th thread worked for 0.755816
+	7-th thread worked for 0.764148
+######## END #########
+
+####### START ########
+BLOCKED mode.
+1 threads with c = 3 worked for 0.299544
+	0-th thread worked for 0.299393
+######## END #########
+
+####### START ########
+BLOCKED mode.
+2 threads with c = 3 worked for 0.242627
+	0-th thread worked for 0.228786
+	1-th thread worked for 0.239605
+######## END #########
+
+####### START ########
+BLOCKED mode.
+4 threads with c = 3 worked for 0.217087
+	0-th thread worked for 0.199298
+	1-th thread worked for 0.203008
+	2-th thread worked for 0.196397
+	3-th thread worked for 0.216907
+######## END #########
+
+####### START ########
+BLOCKED mode.
+8 threads with c = 3 worked for 0.214457
+	0-th thread worked for 0.181728
+	1-th thread worked for 0.183927
+	2-th thread worked for 0.187191
+	3-th thread worked for 0.189537
+	4-th thread worked for 0.202746
+	5-th thread worked for 0.203601
+	6-th thread worked for 0.204042
+	7-th thread worked for 0.201267
+######## END #########
+
+####### START ########
+BLOCKED mode.
+4 threads with c = 40 worked for 27.022895
+	0-th thread worked for 27.44386
+	1-th thread worked for 27.155227
+	2-th thread worked for 27.143325
+	3-th thread worked for 27.32360
+######## END #########
+
