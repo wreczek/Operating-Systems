@@ -1,0 +1,15 @@
+4 threads worked for 0.000000
+4 threads worked for 0.000115
+4 threads worked for 0.000126
+4 threads worked for 0.001581
+4 threads worked for 0.000117
+4 threads worked for 0.000128
+4 threads worked for 0.000895
+4 threads worked for 0.002100
+4 threads with c = 3 worked for 0.000485
+4 threads with c = 3 worked for 0.033538
+4 threads with c = 3 worked for 0.042299
+4 threads with c = 3 worked for 0.032115
+4 threads with c = 3 worked for 0.038283
+4 threads with c = 3 worked for 0.040943
+4 threads with c = 3 worked for 0.040718
