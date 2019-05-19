@@ -8,4 +8,4 @@ compile:
 	$(CC) main main.c -lpthread
 	
 run:
-	./main
+	./main config
