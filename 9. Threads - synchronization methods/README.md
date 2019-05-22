@@ -1,32 +1,36 @@
+# Opis problemu
 
-## Opis problemu
-Jednym z często spotykanych problemów synchronizacji jest "Problem producentów i konsumentów". Grupa producentów zapisuje dane w określonym miejscu, a konsumenci je pobierają (konsumują). Jedno z rozwiązań opiera się na wykorzystaniu tablicy działającej jak bufor cykliczny, co pozwala na zamortyzowanie chwilowych różnic w szybkości działania producenta i konsumenta oraz niedopuszczenie do nadprodukcji. Tę wersję problemu nazywa się problemem z ograniczonym buforem. Pojedynczy element bufora jest sekcją krytyczną, w której przebywać może tylko jeden producent albo konsument.
-  
-Zaimplementuj program P+K wątkowy dla P producentów i K konsumentów, działających na tym samym buforze. Rolę bufora pełni globalna tablica N wskaźników do stringów o różnej długości. Producent produkuje i wstawia do bufora porcje różnej wielkości. Konsument pobiera, poszukując porcji określonej wielkości.
+W ramach zadana należy zaimplementować rozwiązanie problemu synchronizacyjnego wagoników roller coaster.
 
-Producent działa następująco:
+Po torze w wesołym miasteczku porusza się kilka wagoników  roller coaster. Wagoniki nie mogą się wyprzedzać (poruszają się po jednym torze). Po podjechaniu do platformy wagonik otwiera drzwi. Następnie z wagonika wysiadają pasażerowie (jeśli wagonik nie był pusty). Gdy wszyscy pasażerowie wysiądą, do wagonika wsiada kolejna grupa pasażerów. Gdy do wagonika wsiądzie dokładnie c pasażerów jeden z nich (wybrany losowo) wciska przycisk start. Wówczas wagonik zamyka drzwi i odjeżdża. Do platformy może następnie podjechać kolejny wagonik.
 
-    * Jeżeli bufor nie jest pełny, to producent czyta kolejną linię z pliku tekstowego zadanego jako parametr programu (powinien mieć kilka tysięcy linii, np całość "Pana Tadeusza"), alokuje pamięć i umieszcza w buforze wskaźnik do tekstu.
-    * Jeżeli bufor jest pełny, to producent powinien zaczekać do momentu usunięcia wartości z bufora przez konsumenta.
-    * Każda kolejna wartość jest produkowana w następnym elemencie bufora (producent nie zaczyna od początku tablicy, szukając pierwszego wolnego miejsca, lecz pamięta pozycję, gdzie poprzedni producent wstawił wartość, co zapewnia równomierną produkcję dla całego bufora.
-    * Po wstawieniu wartości do ostatniego elementu tablicy producent zaczyna cyklicznie wstawiać elementy  od początku tablicy.
+## Zadanie
 
-Konsument działa następująco:
+Zaimplementuj poprawne rozwiązanie problemu synchronizacji wagoników roller coaster, w którym każdy pasażer i każdy wagonik to osobny wątek. Wagonik wypisuje komunikaty o następujących zdarzeniach:
 
-    * jeżeli bufor jest pusty, to konsument powinien zaczekać do momentu umieszczenia wartości w buforze przez producenta.
-    * jeżeli bufor nie jest pusty, to konsument pobiera, usuwa wartość z bufora i sprawdza, czy długość pobranego napisu jest w zależności od wartości podanego argumentu równa, większa, bądź mniejsza podanej jako argument wartości L, jeśli tak, to wypisuje nr indeksu tablicy i ten napis.
-    * praca konsumentów jest analogiczna do pracy producentów (konsument nie zaczyna od początku, szukając pierwszego wyprodukowanego elementu, ale pamięta pozycję, gdzie poprzedni konsument pobrał wartość, co zapewnia równomierną konsumpcję dla całego bufora.
-    * Po pobraniu wartości ostatniego elementu tablicy konsument zaczyna cyklicznie pobierać elementy  od początku tablicy.
+    1. Zamknięcie drzwi.
+    2. Rozpoczęcie jazdy. Zakładamy, że jazda trwa pewien losowy okres czasu. Na potrzeby zadania można przyjąć czas w przedziale od 0 do kilku milisekund.
+    3. Zakończenie jazdy.
+    4. Otwarcie drzwi.
+    5. Zakończenie pracy wątku.
 
-Wątki powinny działać w pętli nieskończonej i kończyć się:
+Pasażer wypisuje komunikaty o następujących zdarzeniach:
 
-    * jeśli nk>0, po upływie nk sekund,
-    * jeśli nk=0, po przeczytaniu ostatniego wersu pliku tekstowego lub po odebraniu przez proces główny sygnału CTRL-C.
+    1. Wejście do wagonika. Komunikat ten zawiera aktualną liczbę pasażerów w wagoniku.
+    2. Opuszczenie wagonika. Komunikat ten zawiera aktualną liczbę pasażerów w wagoniku.
+    3. Naciśnięcie przycisku start.
+    4. Zakończenie pracy wątku.
 
-Program powinien umożliwić uruchomienie trybu opisowego (każdy producent i konsument raportuje swoją pracę) oraz uproszczonego (informacje wypisują tylko konsumenci, jeśli odnajdą odpowiedni wynik).
+Każdy wypisywany komunikat musi zawierać znacznik czasowy z dokładnością do milisekund oraz identyfikator, odpowiednio, wagonika lub pasażera. Sekwencja zdarzeń musi gwarantować poprawy przewóz pasażerów. Niedopuszczalne jest na przykład:
 
-Program powinien wczytać z linii poleceń plik konfiguracyjny, w którym są ustawione parametry P, K, N, nazwa pliku, L, tryb wyszukiwania, tryb wypisywania informacji oraz nk.
-Należy wykonać dwie wersje rozwiązania:
+    * wejście pasażera do wagonika gdy w wagoniku znajduje się pasażer z poprzedniej jazdy,
+    * wejście do wagonika więcej niż c pasażerów,
+    * naciśnięcie przycisku start gdy w wagoniku jest mniej niż c pasażerów,
+    * zamknięcie drzwi przed naciśnięciem przycisku start,
+    * podjechanie wagonika do platformy zanim poprzedni wagonik z niej odjedzie,
+    * zmiana kolejności wagoników na torze (podjeżdżają do platformy w kolejności innej, niż z niej uprzednio odjechały),
+    * etc.
 
-    1. Rozwiązanie wykorzystujące do synchronizacji muteks i zmienne warunkowe (zgodne z typem rozwiązań problemu współbieżnego stosującego monitor) (50%)
-    2. Rozwiązanie wykorzystujące do synchronizacji semafory nienazwane standardu POSIX (zgodne z typem rozwiązań problemu współbieżnego stosującego semafory) (50%)
+Niedopuszczalne jest również rozwiązanie, w którym niektóre wątki są głodzone (niektórzy pasażerowie w ogóle nie wsiadają do wagoników, podczas gdy inni jeżdżą wielokrotnie).
+
+Program należy zaimplementować korzystając z wątków i mechanizmów synchronizacji biblioteki POSIX Threads. Argumentami wywołania programu są: liczba wątków pasażerów, liczba wątków wagoników, pojemność wagonika (c) i liczba przejazdów (n). Po uruchomieniu programu wątek główny tworzy wątki dla pasażerów i dla wagoników. Następnie każdy wagonik wykonuje n przejazdów (wagoniki jadą po torze równocześnie, zachowując swoją początkową kolejność) po czym kończy pracę. Wątki pasażerów działają tak długo, jak długo pracuje choć jeden wagonik. W tym czasie wątek główny oczekuje na zakończenie wszystkich stworzonych wątków. Niedopuszczalne jest tworzenie dodatkowych wątków, których celem byłoby zapewnienie synchronizacji (lub wykorzystanie w tym celu wątku głównego).
