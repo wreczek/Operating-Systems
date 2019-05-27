@@ -5,7 +5,10 @@ clean:
 	rm -f main
 	
 compile:
+	make clean
 	$(CC) main main.c -lpthread
 	
 run:
-	./main 100 5 10 20
+	make compile
+	./main
+	#./main 100 5 10 20
