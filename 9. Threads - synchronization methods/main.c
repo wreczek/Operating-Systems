@@ -6,7 +6,7 @@
 #include <signal.h>
 #include <sys/time.h>
 
-#define MAX 64
+#define MAX 1024
 
 struct timeval s_time;
 
@@ -42,6 +42,7 @@ pthread_cond_t empty_for_client_cond = PTHREAD_COND_INITIALIZER; // door
 pthread_cond_t finish_cond = PTHREAD_COND_INITIALIZER; // empty
 pthread_cond_t trolley_cond = PTHREAD_COND_INITIALIZER; // exit
 pthread_cond_t close_cond = PTHREAD_COND_INITIALIZER; // exit
+pthread_cond_t drugi_przebieg = PTHREAD_COND_INITIALIZER; // exit
 pthread_t * p_threads;
 pthread_t * t_threads;
 
@@ -77,7 +78,7 @@ void sig_hanlder(int signum) {
 void print_time(char * msg, int tid){
     struct timeval timeout = diff_time(gettime());
     printf("%s", msg);
-    printf("%ld.%03ld for thread %d.\n", timeout.tv_sec, timeout.tv_usec, tid);
+    printf("%ld.%06ld for thread %d.\n", timeout.tv_sec, timeout.tv_usec, tid);
 }
 
 void print_finish(){
@@ -133,11 +134,12 @@ void * passenger(void * pnum){
     atexit(print_finish);
     int p_num = *(int*)pnum;
     pthread_mutex_lock(&p_mutex[p_num]);
-    if (!can_entry)
-        pthread_cond_wait(&entry_cond, &p_mutex[p_num]);
+
     while (counter < n*t*c){
         counter++;
         pthread_mutex_lock(&in_mutex);
+        if (!can_entry)
+            pthread_cond_wait(&entry_cond, &p_mutex[p_num]);
         int end = curr_t;
         printf("curr_t = %d\n", curr_t);
         c_num[end]++;
@@ -158,8 +160,12 @@ void * passenger(void * pnum){
                 pthread_cond_wait(&empty_cond, &p_mutex[p_num]);
             }/// TU STOP
             printf("DOSZLEM2\n");
+            pthread_mutex_unlock(&in_mutex);
         }
-        pthread_mutex_unlock(&in_mutex);
+        else{
+            pthread_mutex_unlock(&in_mutex);
+            pthread_cond_wait(&drugi_przebieg, &p_mutex[p_num]);
+        }
         printf("finished = %d, end = %d\n", finished, end);
         while (finished != end)
             pthread_cond_wait(&finish_cond, &p_mutex[p_num]);
@@ -173,8 +179,8 @@ void * passenger(void * pnum){
             pthread_cond_wait(&empty_for_client_cond, &p_mutex[p_num]);
         }
         else{
-            pthread_cond_broadcast(&empty_cond);
             pthread_mutex_unlock(&out_mutex);
+            pthread_cond_broadcast(&empty_cond);
         }
     }
     pthread_mutex_unlock(&p_mutex[p_num]);
@@ -186,17 +192,18 @@ void * trolley(void * tnum){
     pthread_mutex_lock(&t_mutex[t_num]);
     if (t_num == 0){
         print_time("Trolley - open: ", t_num);
-        can_entry = 1;
-        pthread_cond_broadcast(&entry_cond);
+
     }
 
     for (int i = 0; i < n; ++i){
         while (t_num != curr_t)
             pthread_cond_wait(&trolley_cond, &t_mutex[t_num]);
         print_time("Trolley - open: ", t_num);
+        can_entry = 1;
+        pthread_cond_broadcast(&entry_cond);
         if (started != 1)
             pthread_cond_wait(&start_cond, &t_mutex[t_num]);
-
+        can_entry = 0;
         started = 0;
         printf("trolley : closed = %d\n", closed);
         printf("trolley przed : curr_t = %d\n", curr_t);
@@ -211,20 +218,24 @@ void * trolley(void * tnum){
         usleep(5);
         while (t_num != curr_t)
             pthread_cond_wait(&trolley_cond, &t_mutex[t_num]); /// TU STOP
+        can_entry = 0;
         print_time("Trolley - finished: ", t_num);
         print_time("Trolley - opened: ", t_num);
         finished = t_num;
+        pthread_cond_broadcast(&drugi_przebieg);
         pthread_cond_broadcast(&finish_cond);
         while (c_num[t_num] != 0)
             pthread_cond_wait(&empty_cond, &t_mutex[t_num]);
+        usleep(5);
         pthread_cond_broadcast(&empty_for_client_cond);
     }
     curr_t = (curr_t+1)%t;
-    pthread_cond_broadcast(&trolley_cond);
     print_time("Trolley - done...", t_num);
+    pthread_cond_broadcast(&trolley_cond);
     pthread_mutex_unlock(&t_mutex[t_num]);
     if (t_num == t-1){ // end passenger threads
         for (int i = 0; i < p; ++i){
+            printf("CANCEL\n");
             pthread_cancel(p_threads[i]);
         }
     }
@@ -247,10 +258,10 @@ int main(int argc, char ** argv){
 
     s_time = gettime();
 
-    p = 10;//atoi(argv[1]);
-    t = 4;//atoi(argv[2]);
-    c = 2;//atoi(argv[3]);
-    n = 1;//atoi(argv[4]);
+    p = 50;//atoi(argv[1]);
+    t = 7;//atoi(argv[2]);
+    c = 6;//atoi(argv[3]);
+    n = 5;//atoi(argv[4]);
 
     init();
     start_threads();
