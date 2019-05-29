@@ -1,15 +1,16 @@
-CC = gcc -Wall -o
+CC = gcc -Wall
 	
 clean:
-	rm -f main
+	rm -f server
+	rm -f client
 	rm -f *.o
 	rm -f *.so
 	rm -f *.a
 	
 compile:
 	make clean
-	$(CC) server server.c -lpthread
-	$(CC) client client.c -lpthread
+	$(CC) server.c lib.c -o server -lrt -lpthread
+	$(CC) client.c lib.c -o client -lrt -lpthread
 	
 runserver:
 	./server
