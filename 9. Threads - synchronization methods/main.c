@@ -35,14 +35,14 @@ pthread_mutex_t * t_mutex;
 
 pthread_mutexattr_t mutexattr;
 
-pthread_cond_t entry_cond = PTHREAD_COND_INITIALIZER; // trolley
-pthread_cond_t start_cond = PTHREAD_COND_INITIALIZER; // client
-pthread_cond_t empty_cond = PTHREAD_COND_INITIALIZER; // door
-pthread_cond_t empty_for_client_cond = PTHREAD_COND_INITIALIZER; // door
-pthread_cond_t finish_cond = PTHREAD_COND_INITIALIZER; // empty
-pthread_cond_t trolley_cond = PTHREAD_COND_INITIALIZER; // exit
-pthread_cond_t close_cond = PTHREAD_COND_INITIALIZER; // exit
-pthread_cond_t drugi_przebieg = PTHREAD_COND_INITIALIZER; // exit
+pthread_cond_t entry_cond = PTHREAD_COND_INITIALIZER;
+pthread_cond_t start_cond = PTHREAD_COND_INITIALIZER;
+pthread_cond_t empty_cond = PTHREAD_COND_INITIALIZER;
+pthread_cond_t empty_for_client_cond = PTHREAD_COND_INITIALIZER;
+pthread_cond_t finish_cond = PTHREAD_COND_INITIALIZER;
+pthread_cond_t trolley_cond = PTHREAD_COND_INITIALIZER;
+pthread_cond_t close_cond = PTHREAD_COND_INITIALIZER;
+pthread_cond_t drugi_przebieg = PTHREAD_COND_INITIALIZER;
 pthread_t * p_threads;
 pthread_t * t_threads;
 
