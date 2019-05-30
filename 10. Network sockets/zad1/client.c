@@ -1,5 +1,7 @@
 #include "lib.h"
 
+#define BUFFER_SIZE 1024
+
 char * client_name;
 short socket_mode;
 int server_socket_fd = -1;
@@ -7,11 +9,6 @@ int server_socket_fd = -1;
 char * server_IP_address;
 in_port_t server_inet_port;
 char * server_unix_socket_path_name;
-
-void error(char * msg){
-    perror(msg);
-    exit(EXIT_FAILURE);
-}
 
 void sig_int(int signum) {
     printf("got SIGINT - closing the client\n");
@@ -73,20 +70,76 @@ void process_message() {
         printf("got ping request, id: %d\n", pm.ping_id);
         send_ping_message(server_socket_fd, pm.ping_id);
     }
-    else if(msg_type == MSG_TASK) { /// TODO: tu bedzie liczenie slow
+    else if(msg_type == MSG_TASK) {
         struct task_message tm = get_task_message(buffer);
-        printf("got task, id: %d, type: %d, operands: %d, %d\n", tm.task_id, tm.task_type, tm.operand1, tm.operand2);
+        printf("got task, id: %d, type: %d, path: %s\n", tm.task_id, tm.task_type, tm.path_or_content);
 
-        if(tm.task_type == TASK_ADD)
-            tm.result = tm.operand1 + tm.operand2;
-        else if(tm.task_type == TASK_SUB)
-            tm.result = tm.operand1 - tm.operand2;
-        else if(tm.task_type == TASK_MUL)
-            tm.result = tm.operand1 * tm.operand2;
-        else if(tm.task_type == TASK_DIV)
-            tm.result = tm.operand1 / tm.operand2;
+        char * content;
 
-        send_task_message(server_socket_fd, tm.task_id, tm.task_type, tm.operand1, tm.operand2, tm.result);
+        if (tm.task_type == ALL_WORDS){ // 1
+            // all words
+            FILE * fptr = fopen(tm.path_or_content, "r");
+            char delims[] = " ,.?!\t\n";
+            char str[BUFFER_SIZE];
+
+            int count = 0;
+
+            while ((fgets(str, BUFFER_SIZE, fptr)) != NULL){
+                char * buff = strtok(str, delims);
+                while (buff != NULL){
+                    count++;
+                    buff = strtok(NULL, delims);
+                }
+            }
+
+            fclose(fptr);
+            char str2[3];
+            sprintf(str2, "%d", count);
+            content = malloc(strlen(str2)+1);
+            for (int i = 0; i < strlen(str2); ++i){
+                content[i] = str2[i];
+            }
+        }
+        else if (tm.task_type == ONE_WORD){ // 2
+            // one word
+            FILE * fptr = fopen(tm.path_or_content, "r");
+            const char * word = "nas";
+            char str[BUFFER_SIZE];
+            char * pos;
+
+            int index, count;
+
+            count = 0;
+
+            // Read line from file till end of file.
+            while ((fgets(str, BUFFER_SIZE, fptr)) != NULL)
+            {
+                index = 0;
+
+                // Find next occurrence of word in str
+                while ((pos = strstr(str + index, word)) != NULL)
+                {
+                    // Index of word in str is
+                    // Memory address of pos - memory
+                    // address of str.
+                    index = (pos - str) + 1;
+                    count++;
+                }
+            }
+            fclose(fptr);
+            char str2[5];
+            sprintf(str2, "%d", count);
+            content = malloc(strlen(str2));
+            for (int i = 0; i < strlen(str2); ++i){
+                content[i] = str2[i];
+            }
+        }
+        else {
+            content = "bad_task_type";
+        }
+
+        send_task_message(server_socket_fd, tm.task_id, tm.task_type, content);
+        free(content);
     }
 }
 

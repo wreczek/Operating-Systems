@@ -36,10 +36,8 @@
 #define MODE_UNIX               2
 
 // task types:
-#define TASK_ADD                1
-#define TASK_SUB                2
-#define TASK_MUL                3
-#define TASK_DIV                4
+#define ALL_WORDS                1
+#define ONE_WORD                 2
 
 // client representation
 struct client {
@@ -52,10 +50,11 @@ struct client {
 
 // message settings:
 #define RAW_MESSAGE_SIZE 64
+#define CONTENT_SIZE 1024
 
 // message types:
 #define MSG_LOGIN       1  // format: "%d %s" -> msg_type, message
-#define MSG_TASK        2  // format: "%d %d %d %d %d" -> msg_type, task_id, task_type, operand1, operand2, result
+#define MSG_TASK        2  // format: "%d %s" -> msg_type, task_id, path
 #define MSG_PING        3  // format: "%d %d" -> msg_type
 
 struct login_message {
@@ -65,22 +64,21 @@ struct login_message {
 struct task_message {
     int task_id;
     int task_type;
-    int operand1;
-    int operand2;
-    int result;
+    char path_or_content[CONTENT_SIZE];
 };
 
 struct ping_message {
     int ping_id;
 };
 
+void error(char * msg);
 // lib API:
 int send_message(int socket_fd, const char message[RAW_MESSAGE_SIZE]);
 int receive_message(int socket_fd, char message[RAW_MESSAGE_SIZE]);
 int check_message_type(const char message[RAW_MESSAGE_SIZE]);
 
 int send_login_message(int socket_fd, const char * string);
-int send_task_message(int socket_fd, int task_id, int task_type, int operand1, int operand2, int result); /// TODO: tu bedzie tylko tablica char *
+int send_task_message(int socket_fd, int task_id, int task_type, char * path_or_content);
 int send_ping_message(int socket_fd, int ping_id);
 
 struct login_message get_login_message(const char raw_message[RAW_MESSAGE_SIZE]);

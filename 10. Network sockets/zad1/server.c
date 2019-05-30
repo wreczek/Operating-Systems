@@ -85,6 +85,8 @@ void sig_pipe(int signum) {
     printf("SIGPIPE received - probably client down\n");
 }
 
+// ==================== MAIN =======================
+
 int main(int argc, char **argv) {
     for(int i = 0; i < SERVER_CLIENTS_LIMIT; ++i) {
         registered_clients[i].client_id = i;
@@ -184,7 +186,7 @@ int register_client(int client_fd, const char * name) {
             printf("client's name %s already in use\n", name);
 
             send_login_message(client_fd, "rejected");
-            // remove_client(client_fd, 0); // potrzebne? tak jest w tresci?
+            remove_client(client_fd, 0); // potrzebne? tak jest w tresci?
             pthread_mutex_unlock(&mut_clients);
             return 0;
         }
@@ -237,7 +239,7 @@ void process_message(int client_fd, const char message[RAW_MESSAGE_SIZE]) {
     }
     else if(msg_type == MSG_TASK) {
         struct task_message tm = get_task_message(message);
-        printf("result for task %d is: %d\n", tm.task_id, tm.result);
+        printf("result for task %d is: %s\n", tm.task_id, tm.path_or_content);
     }
 }
 
@@ -372,41 +374,23 @@ int get_next_registered_client(int starting_point) {
 
 // Processes string that contains calc request
 int get_calc_task(char * message, struct task_message * task) {
-    // request expects exactly 3 tokens
     char * token_ptr;
-    char * tokens[3];
 
     token_ptr = strtok(message, " \t\n");
 
     if(token_ptr == NULL)
         return -1;
 
-    tokens[0] = token_ptr;
+    strcpy(task->path_or_content, token_ptr);
 
-    for(int i = 1; i < 3; ++i) {
-        token_ptr = strtok(NULL, " \t\n");
+    token_ptr = strtok(NULL, " \n\t");
 
-        if(token_ptr == NULL)
-            return -1;
-
-        tokens[i] = token_ptr;
-    }
-
-    if(strtok(NULL, " \n") != NULL)
+    if(token_ptr == NULL)
         return -1;
 
-    task->operand1 = atoi(tokens[1]);
-    task->operand2 = atoi(tokens[2]);
+    task->task_type = atoi(token_ptr);
 
-    if(strcmp(tokens[0], "ADD") == 0)
-        task->task_type = TASK_ADD;
-    else if(strcmp(tokens[0], "SUB") == 0)
-        task->task_type = TASK_SUB;
-    else if(strcmp(tokens[0], "MUL") == 0)
-        task->task_type = TASK_MUL;
-    else if(strcmp(tokens[0], "DIV") == 0)
-        task->task_type = TASK_DIV;
-    else
+    if(strtok(NULL, " \n") != NULL)
         return -1;
 
     return 0;
@@ -423,15 +407,14 @@ void * input_manager_thread(void * arg) {
 
     while ((bytes_read = getline(&buffer, &buffer_size, stdin)) != -1) {
         struct task_message task;
-        task.result = 0;
         if (get_calc_task(buffer, &task) == -1) {
-            printf("invalid input (usage: OPERATION OPERAND1 OPERAND2)\n");
+            printf("invalid input (usage: path)\n");
             continue;
         }
         int target_client = get_next_registered_client(previous_client);
         if (target_client != -1)
             send_task_message(registered_clients[target_client].socket_fd,
-                task_id_counter++, task.task_type, task.operand1, task.operand2, 0);
+                task_id_counter++, task.task_type, task.path_or_content);
         else {
             printf("no computing clients available\n");
             continue;

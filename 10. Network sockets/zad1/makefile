@@ -13,7 +13,8 @@ compile:
 	$(CC) client.c lib.c -o client -lrt -lpthread
 	
 runserver:
-	./server
+	./server 2137 "HOME"
 	
 runclient:
-	./client
+	./client client1 unix "HOME"
+	#./client client2 inet 127.0.0.1 2137
